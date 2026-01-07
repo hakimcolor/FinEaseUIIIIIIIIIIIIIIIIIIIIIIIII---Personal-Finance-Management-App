@@ -1,8 +1,5 @@
-
 import { auth } from '../Firebase/Firebase.confige';
-import React, { useContext, useState } from 'react';
-import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
-import { FcGoogle } from 'react-icons/fc';
+import { useContext, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../Context/AuthContext';
 import {
@@ -12,6 +9,9 @@ import {
 } from 'firebase/auth';
 import toast, { Toaster } from 'react-hot-toast';
 import { Helmet } from 'react-helmet';
+import { motion } from 'framer-motion';
+import { FiMail, FiLock, FiEye, FiEyeOff, FiLogIn, FiDollarSign } from 'react-icons/fi';
+import { FcGoogle } from 'react-icons/fc';
 
 const provider = new GoogleAuthProvider();
 
@@ -77,104 +77,191 @@ const SignIn = () => {
   };
 
   return (
-    <div className=" flex items-center justify-center px-4 pt-20 pb-10 transition-colors">
+    <div 
+      className="min-h-screen flex items-center justify-center px-4 py-12 relative overflow-hidden"
+      style={{ backgroundColor: 'var(--bg-color)' }}
+    >
       <Helmet>
         <title>SignIn | Money Manager</title>
       </Helmet>
       <Toaster />
-      <div className="bg-white dark:bg-[#122022] shadow-2xl rounded-3xl p-10 w-full max-w-md border border-[#00A86B]/40 dark:border-[#00A86B]/20 transition-colors">
-        <h2 className="text-3xl font-extrabold text-center text-[#003B2E] dark:text-white mb-2">
-          Welcome Back 👋
-        </h2>
-        <p className="text-center text-[#003B2E]/80 dark:text-[#D2EAE5] mb-8">
-          Sign in to continue your journey
-        </p>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div className="relative">
-            <label className="block text-[#003B2E] dark:text-[#D2EAE5] font-medium mb-1">
-              Email
-            </label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              required
-              className="w-full px-4 py-3 border border-gray-300 dark:border-[#23403B] rounded-xl focus:ring-2 focus:ring-[#00A86B] focus:outline-none transition bg-[#F9FAFB] dark:bg-[#1B2D2D] text-[#003B2E] dark:text-white"
-            />
-          </div>
-
-          <div className="relative">
-            <label className="block text-[#003B2E] dark:text-[#D2EAE5] font-medium mb-1">
-              Password
-            </label>
-            <input
-              type={show ? 'text' : 'password'}
-              value={passcode}
-              onChange={(e) => setPasscode(e.target.value)}
-              placeholder="Enter your password"
-              required
-              className="w-full px-4 py-3 border border-gray-300 dark:border-[#23403B] rounded-xl focus:ring-2 focus:ring-[#00A86B] focus:outline-none pr-10 transition bg-[#F9FAFB] dark:bg-[#1B2D2D] text-[#003B2E] dark:text-white"
-            />
-            <button
-              type="button"
-              onClick={handleToggle}
-              className="absolute mt-6 right-3 -translate-y-1/2 text-[#00A86B] dark:text-[#39F9C0]"
-            >
-              {show ? <AiOutlineEyeInvisible size={22} /> : <AiOutlineEye size={22} />}
-            </button>
-          </div>
-
-          <div className="flex items-center gap-2 mt-2">
-            <button
-              type="button"
-              onClick={handleForgotPassword}
-              disabled={!email}
-              className={`text-sm ${
-                email
-                  ? 'text-[#00A86B] dark:text-[#39F9C0] hover:underline'
-                  : 'text-gray-400 cursor-not-allowed'
-              }`}
-            >
-              Forgot Password?
-            </button>
-          </div>
-
-          {error && <p className="text-red-600 text-sm">{error}</p>}
-
-          <button
-            type="submit"
-            className="w-full py-3 border border-[#00A86B] bg-[#00A86B] text-white font-bold rounded-xl hover:bg-[#007C56] dark:hover:bg-[#009E70] transition"
-          >
-            Sign In
-          </button>
-        </form>
-
-        <div className="flex items-center my-6">
-          <div className="flex-grow h-px bg-[#00A86B] dark:bg-[#39F9C0]"></div>
-          <span className="px-3 text-[#00A86B] dark:text-[#39F9C0] text-sm">or</span>
-          <div className="flex-grow h-px bg-[#00A86B] dark:bg-[#39F9C0]"></div>
-        </div>
-
-        <button
-          onClick={handleGoogleLogin}
-          className="w-full flex items-center justify-center gap-3 border border-[#00A86B] dark:border-[#39F9C0] py-3 rounded-xl text-[#003B2E] dark:text-white hover:bg-[#00A86B] hover:text-white dark:hover:bg-[#39F9C0] transition"
-        >
-          <FcGoogle className="w-7 h-7" />
-          <span className="font-medium">Continue with Google</span>
-        </button>
-
-        <p className="text-sm text-center text-[#003B2E] dark:text-[#D2EAE5] mt-6">
-          Don’t have an account?{' '}
-          <NavLink
-            to="/signup"
-            className="text-[#00A86B] dark:text-[#39F9C0] font-medium hover:underline"
-          >
-            Sign Up
-          </NavLink>
-        </p>
+      {/* Background Effects */}
+      <div className="absolute inset-0 overflow-hidden">
+        <motion.div 
+          className="absolute top-1/4 -left-20 w-72 h-72 rounded-full opacity-20"
+          style={{ backgroundColor: 'var(--color-primary)', filter: 'blur(80px)' }}
+          animate={{ scale: [1, 1.2, 1], x: [0, 30, 0] }}
+          transition={{ duration: 6, repeat: Infinity }}
+        />
+        <motion.div 
+          className="absolute bottom-1/4 -right-20 w-96 h-96 rounded-full opacity-15"
+          style={{ backgroundColor: 'var(--color-secondary)', filter: 'blur(100px)' }}
+          animate={{ scale: [1.2, 1, 1.2], y: [0, -30, 0] }}
+          transition={{ duration: 8, repeat: Infinity }}
+        />
       </div>
+
+      {/* Floating Icons */}
+      <div className="absolute inset-0 pointer-events-none">
+        {[...Array(5)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute"
+            style={{ left: `${15 + i * 18}%`, top: `${20 + (i % 3) * 25}%` }}
+            animate={{ y: [0, -20, 0], opacity: [0.1, 0.3, 0.1] }}
+            transition={{ duration: 3 + i, repeat: Infinity, delay: i * 0.5 }}
+          >
+            <FiDollarSign size={30 + i * 5} style={{ color: 'var(--color-primary)' }} />
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Main Card */}
+      <motion.div 
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="relative z-10 w-full max-w-md"
+      >
+        <div 
+          className="card rounded-3xl p-8 sm:p-10 shadow-2xl"
+          style={{ border: '1px solid var(--border-color)' }}
+        >
+          {/* Header */}
+          <div className="text-center mb-8">
+            <motion.div 
+              className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4"
+              style={{ backgroundColor: 'var(--color-primary)' }}
+              whileHover={{ scale: 1.1, rotate: 10 }}
+            >
+              <FiLogIn size={28} className="text-white" />
+            </motion.div>
+            <h2 className="text-2xl sm:text-3xl font-bold" style={{ color: 'var(--text-primary)' }}>
+              Welcome Back 👋
+            </h2>
+            <p className="mt-2" style={{ color: 'var(--text-muted)' }}>
+              Sign in to continue your journey
+            </p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Email */}
+            <div>
+              <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
+                <FiMail className="inline mr-2" /> Email
+              </label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email"
+                required
+                className="w-full px-4 py-3 rounded-xl outline-none transition-all"
+                style={{ 
+                  backgroundColor: 'var(--bg-color)',
+                  border: '2px solid var(--border-color)',
+                  color: 'var(--text-primary)'
+                }}
+              />
+            </div>
+
+            {/* Password */}
+            <div>
+              <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
+                <FiLock className="inline mr-2" /> Password
+              </label>
+              <div className="relative">
+                <input
+                  type={show ? 'text' : 'password'}
+                  value={passcode}
+                  onChange={(e) => setPasscode(e.target.value)}
+                  placeholder="Enter your password"
+                  required
+                  className="w-full px-4 py-3 pr-12 rounded-xl outline-none transition-all"
+                  style={{ 
+                    backgroundColor: 'var(--bg-color)',
+                    border: '2px solid var(--border-color)',
+                    color: 'var(--text-primary)'
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={handleToggle}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer"
+                  style={{ color: 'var(--color-primary)' }}
+                >
+                  {show ? <FiEyeOff size={20} /> : <FiEye size={20} />}
+                </button>
+              </div>
+            </div>
+
+            {/* Forgot Password */}
+            <div className="flex justify-end">
+              <button
+                type="button"
+                onClick={handleForgotPassword}
+                disabled={!email}
+                className={`text-sm cursor-pointer ${email ? 'hover:underline' : 'opacity-50 cursor-not-allowed'}`}
+                style={{ color: 'var(--color-primary)' }}
+              >
+                Forgot Password?
+              </button>
+            </div>
+
+            {error && (
+              <p className="text-sm p-3 rounded-lg" style={{ backgroundColor: 'var(--color-danger)', color: 'white' }}>
+                {error}
+              </p>
+            )}
+
+            {/* Submit Button */}
+            <motion.button
+              type="submit"
+              className="w-full py-4 text-white font-bold rounded-xl cursor-pointer transition-all"
+              style={{ backgroundColor: 'var(--color-primary)' }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              Sign In
+            </motion.button>
+          </form>
+
+          {/* Divider */}
+          <div className="flex items-center my-6">
+            <div className="flex-1 h-px" style={{ backgroundColor: 'var(--border-color)' }}></div>
+            <span className="px-4 text-sm" style={{ color: 'var(--text-muted)' }}>or</span>
+            <div className="flex-1 h-px" style={{ backgroundColor: 'var(--border-color)' }}></div>
+          </div>
+
+          {/* Google Button */}
+          <motion.button
+            onClick={handleGoogleLogin}
+            className="w-full flex items-center justify-center gap-3 py-4 rounded-xl font-medium cursor-pointer transition-all"
+            style={{ 
+              border: '2px solid var(--border-color)',
+              color: 'var(--text-primary)'
+            }}
+            whileHover={{ scale: 1.02, borderColor: 'var(--color-primary)' }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <FcGoogle size={24} />
+            Continue with Google
+          </motion.button>
+
+          {/* Sign Up Link */}
+          <p className="text-center mt-6" style={{ color: 'var(--text-secondary)' }}>
+            Don't have an account?{' '}
+            <NavLink
+              to="/signup"
+              className="font-semibold hover:underline"
+              style={{ color: 'var(--color-primary)' }}
+            >
+              Sign Up
+            </NavLink>
+          </p>
+        </div>
+      </motion.div>
     </div>
   );
 };

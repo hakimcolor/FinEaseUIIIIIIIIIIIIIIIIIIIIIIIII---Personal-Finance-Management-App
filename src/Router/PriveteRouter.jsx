@@ -1,11 +1,17 @@
 import React, { useContext } from 'react'
 import { AuthContext } from '../Context/AuthContext'
 import { Navigate, Outlet } from 'react-router-dom';
+import Loding from '../Pages/Loding';
 
 const PriveteRouter = () => {
-  const { user } = useContext(AuthContext);
-  return user?<Outlet></Outlet>:<Navigate to='/signin' replace/>
-   
+  const { user, loading } = useContext(AuthContext);
+
+  // Show loading while checking auth state
+  if (loading) {
+    return <Loding />;
+  }
+
+  return user ? <Outlet /> : <Navigate to='/signin' replace />
 }
 
 export default PriveteRouter

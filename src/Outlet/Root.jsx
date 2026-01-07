@@ -7,7 +7,7 @@ const Root = () => {
   return (
     <div>
       <Header></Header>
-      <br /><br /><br /><br /><br />
+      <br /><br /><br /><br />
       <Outlet></Outlet><br /><br />
       <Footer></Footer>
     </div>

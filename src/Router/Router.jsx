@@ -10,6 +10,7 @@ import Reports from "../Pages/Reports";
 import TransactionDetails from "../Pages/TransactionDetails";
 import UpdateTransaction from "../Pages/UpdateTransacrion";
 import MyProfile from "../Pages/MyProfile";
+import NotFound from "../Pages/NotFound";
  
 export  const router = createBrowserRouter([
   {
@@ -54,6 +55,10 @@ export  const router = createBrowserRouter([
             path: 'myprofile',
             element:<MyProfile/>          }
         ],
+      },
+      {
+        path: '*',
+        element: <NotFound />,
       },
     ],
   },

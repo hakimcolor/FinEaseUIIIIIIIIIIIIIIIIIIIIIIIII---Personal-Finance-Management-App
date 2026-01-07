@@ -1,20 +1,122 @@
 @import 'tailwindcss';
+
+/* 
+  4 COLOR PALETTE:
+  Primary: #0D9488 (Teal)
+  Secondary: #6366F1 (Indigo)
+  Success: #10B981 (Green)
+  Danger: #EF4444 (Red)
+*/
+
 :root {
-  --bg-color: #ffffff;
-  --text-color: #000000;
+  /* Primary Colors */
+  --color-primary: #0D9488;
+  --color-primary-light: #14B8A6;
+  --color-primary-dark: #0F766E;
+  
+  /* Secondary Colors */
+  --color-secondary: #6366F1;
+  --color-secondary-light: #818CF8;
+  --color-secondary-dark: #4F46E5;
+  
+  /* Success (Income) */
+  --color-success: #10B981;
+  --color-success-light: #34D399;
+  --color-success-dark: #059669;
+  
+  /* Danger (Expense) */
+  --color-danger: #EF4444;
+  --color-danger-light: #F87171;
+  --color-danger-dark: #DC2626;
+
+  /* Light Mode */
+  --bg-color: #F8FAFC;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #F1F5F9;
+  --text-primary: #1E293B;
+  --text-secondary: #64748B;
+  --text-muted: #94A3B8;
+  --border-color: #E2E8F0;
   --header-bg: #2e8b57;
   --header-text: #ffffff;
 }
 
 [data-theme='dark'] {
-  --bg-color: #1f1f1f;
-  --text-color: #ffffff;
+  --bg-color: #0F172A;
+  --bg-card: #1E293B;
+  --bg-card-hover: #334155;
+  --text-primary: #F1F5F9;
+  --text-secondary: #CBD5E1;
+  --text-muted: #94A3B8;
+  --border-color: #334155;
   --header-bg: #111827;
   --header-text: #ffffff;
 }
 
+* {
+  font-family: 'Inter', sans-serif;
+}
+
 body {
   background-color: var(--bg-color);
-  color: var(--text-color);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Card Styles */
+.card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
   transition: all 0.3s ease;
+}
+
+.card:hover {
+  background-color: var(--bg-card-hover);
+}
+
+/* Text Colors */
+.text-main {
+  color: var(--text-primary);
+}
+
+.text-sub {
+  color: var(--text-secondary);
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+/* Primary Button */
+.btn-primary {
+  background-color: var(--color-primary);
+  color: white;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-dark);
+}
+
+/* Secondary Button */
+.btn-secondary {
+  background-color: var(--color-secondary);
+  color: white;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-secondary-dark);
+}
+
+/* Select Dropdown Fix for Dark Mode */
+select {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+}
+
+select option {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  padding: 8px;
 }
