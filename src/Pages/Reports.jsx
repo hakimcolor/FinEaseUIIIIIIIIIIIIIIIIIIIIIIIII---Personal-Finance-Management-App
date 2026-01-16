@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
+import { Helmet } from 'react-helmet';
 import { AuthContext } from '../Context/AuthContext';
 import { Pie, Bar, Doughnut } from 'react-chartjs-2';
 import {
@@ -159,6 +160,9 @@ const Reports = () => {
 
   return (
     <div className="min-h-screen py-8 px-4" style={{ backgroundColor: 'var(--bg-color)' }}>
+      <Helmet>
+        <title>Reports - Money Manager</title>
+      </Helmet>
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">

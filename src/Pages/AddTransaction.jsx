@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
+import { Helmet } from 'react-helmet';
 import { AuthContext } from '../Context/AuthContext';
 import { 
   FiDollarSign, 
@@ -78,6 +79,9 @@ const AddTransaction = () => {
 
   return (
     <div className="min-h-screen py-8 px-4" style={{ backgroundColor: 'var(--bg-color)' }}>
+      <Helmet>
+        <title>Add Transaction - Money Manager</title>
+      </Helmet>
       <Toaster />
       
       <div className="max-w-2xl mx-auto">

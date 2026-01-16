@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import { FiHome, FiArrowLeft, FiAlertCircle, FiDollarSign } from 'react-icons/fi';
 
 const NotFound = () => {
@@ -8,6 +9,10 @@ const NotFound = () => {
       className="min-h-screen flex flex-col items-center justify-center px-4 relative overflow-hidden"
       style={{ backgroundColor: 'var(--bg-color)' }}
     >
+      <Helmet>
+        <title>404 - Page Not Found | Money Manager</title>
+      </Helmet>
+      
       {/* Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
         <motion.div 

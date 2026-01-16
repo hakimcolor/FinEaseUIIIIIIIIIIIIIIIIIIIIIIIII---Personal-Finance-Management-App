@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef } from 'react';
 import Lenis from 'lenis';
 import { motion, useInView } from 'framer-motion';
+import { Helmet } from 'react-helmet';
 import { AuthContext } from '../Context/AuthContext';
 import HomeSlider from '../Componentes/HomeSlider';
 import OverVew from '../Componentes/OverVew';
@@ -48,30 +49,6 @@ const ScrollReveal = ({ children, direction = 'up', delay = 0 }) => {
   );
 };
 
-// Stagger Container for children animations
-const StaggerContainer = ({ children, staggerDelay = 0.1 }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-50px' });
-
-  return (
-    <motion.div
-      ref={ref}
-      initial="hidden"
-      animate={isInView ? 'visible' : 'hidden'}
-      variants={{
-        hidden: {},
-        visible: {
-          transition: {
-            staggerChildren: staggerDelay,
-          },
-        },
-      }}
-    >
-      {children}
-    </motion.div>
-  );
-};
-
 const Home = () => {
   const { user } = useContext(AuthContext);
 
@@ -102,6 +79,10 @@ const Home = () => {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--bg-color)' }}>
+      <Helmet>
+        <title>Money Manager - Track Your Finances</title>
+      </Helmet>
+      
       {/* Hero Slider */}
       <ScrollReveal direction="scale">
         <HomeSlider />

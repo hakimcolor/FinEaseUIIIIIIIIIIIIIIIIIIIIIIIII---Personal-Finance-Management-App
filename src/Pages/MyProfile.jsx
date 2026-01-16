@@ -3,6 +3,7 @@ import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import { AuthContext } from '../Context/AuthContext';
 import { 
   FiUser, 
@@ -164,6 +165,9 @@ const MyProfile = () => {
 
   return (
     <div className="min-h-screen py-8 px-4" style={{ backgroundColor: 'var(--bg-color)' }}>
+      <Helmet>
+        <title>My Profile - Money Manager</title>
+      </Helmet>
       <Toaster />
       
       <div className="max-w-2xl mx-auto">

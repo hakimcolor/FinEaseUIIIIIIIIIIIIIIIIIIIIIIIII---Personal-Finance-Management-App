@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { Helmet } from 'react-helmet';
 import { 
   FiDollarSign, 
   FiTrendingUp, 
@@ -84,6 +85,9 @@ const UpdateTransaction = () => {
 
   return (
     <div className="min-h-screen py-8 px-4" style={{ backgroundColor: 'var(--bg-color)' }}>
+      <Helmet>
+        <title>Update Transaction - Money Manager</title>
+      </Helmet>
       <div className="max-w-2xl mx-auto">
         {/* Back Button */}
         <button

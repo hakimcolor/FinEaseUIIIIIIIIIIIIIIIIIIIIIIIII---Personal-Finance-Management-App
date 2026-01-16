@@ -1,18 +1,21 @@
-import { createBrowserRouter } from "react-router-dom";
-import Root from "../Outlet/Root";
-import Home from "../Pages/Home";
-import SignIn from "../Pages/Singin";
+import { createBrowserRouter } from 'react-router-dom';
+import Root from '../Outlet/Root';
+import Home from '../Pages/Home';
+import SignIn from '../Pages/Singin';
 import SingUp from '../Pages/SingUp';
-import PriveteRouter from "./PriveteRouter";
-import AddTransaction from "../Pages/AddTransaction";
-import MyTransctions from "../Pages/MyTransctions";
-import Reports from "../Pages/Reports";
-import TransactionDetails from "../Pages/TransactionDetails";
-import UpdateTransaction from "../Pages/UpdateTransacrion";
-import MyProfile from "../Pages/MyProfile";
-import NotFound from "../Pages/NotFound";
- 
-export  const router = createBrowserRouter([
+import PriveteRouter from './PriveteRouter';
+import AddTransaction from '../Pages/AddTransaction';
+import MyTransctions from '../Pages/MyTransctions';
+import Reports from '../Pages/Reports';
+import TransactionDetails from '../Pages/TransactionDetails';
+import UpdateTransaction from '../Pages/UpdateTransacrion';
+import MyProfile from '../Pages/MyProfile';
+import NotFound from '../Pages/NotFound';
+import About from '../Pages/About';
+import Features from '../Pages/Features';
+import Contact from '../Pages/Contact';
+
+export const router = createBrowserRouter([
   {
     path: '/',
     element: <Root />,
@@ -20,6 +23,18 @@ export  const router = createBrowserRouter([
       {
         index: true,
         element: <Home></Home>,
+      },
+      {
+        path: 'about',
+        element: <About />,
+      },
+      {
+        path: 'features',
+        element: <Features />,
+      },
+      {
+        path: 'contact',
+        element: <Contact />,
       },
       {
         path: 'signin',
@@ -49,11 +64,13 @@ export  const router = createBrowserRouter([
             element: <TransactionDetails />,
           },
           {
-           path: 'update-transaction/:id',
+            path: 'update-transaction/:id',
             element: <UpdateTransaction />,
-          }, {
+          },
+          {
             path: 'myprofile',
-            element:<MyProfile/>          }
+            element: <MyProfile />,
+          },
         ],
       },
       {

@@ -10,57 +10,93 @@
 
 :root {
   /* Primary Colors */
-  --color-primary: #0D9488;
-  --color-primary-light: #14B8A6;
-  --color-primary-dark: #0F766E;
-  
+  --color-primary: #0d9488;
+  --color-primary-light: #14b8a6;
+  --color-primary-dark: #0f766e;
+
   /* Secondary Colors */
-  --color-secondary: #6366F1;
-  --color-secondary-light: #818CF8;
-  --color-secondary-dark: #4F46E5;
-  
+  --color-secondary: #6366f1;
+  --color-secondary-light: #818cf8;
+  --color-secondary-dark: #4f46e5;
+
   /* Success (Income) */
-  --color-success: #10B981;
-  --color-success-light: #34D399;
+  --color-success: #10b981;
+  --color-success-light: #34d399;
   --color-success-dark: #059669;
-  
+
   /* Danger (Expense) */
-  --color-danger: #EF4444;
-  --color-danger-light: #F87171;
-  --color-danger-dark: #DC2626;
+  --color-danger: #ef4444;
+  --color-danger-light: #f87171;
+  --color-danger-dark: #dc2626;
 
   /* Light Mode */
-  --bg-color: #F8FAFC;
-  --bg-card: #FFFFFF;
-  --bg-card-hover: #F1F5F9;
-  --text-primary: #1E293B;
-  --text-secondary: #64748B;
-  --text-muted: #94A3B8;
-  --border-color: #E2E8F0;
+  --bg-color: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f1f5f9;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
+  --border-color: #e2e8f0;
   --header-bg: #2e8b57;
   --header-text: #ffffff;
+
+  /* Fonts */
+  --font-primary: 'Poppins', sans-serif;
+  --font-secondary: 'Inter', sans-serif;
 }
 
 [data-theme='dark'] {
-  --bg-color: #0F172A;
-  --bg-card: #1E293B;
+  --bg-color: #0f172a;
+  --bg-card: #1e293b;
   --bg-card-hover: #334155;
-  --text-primary: #F1F5F9;
-  --text-secondary: #CBD5E1;
-  --text-muted: #94A3B8;
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
   --border-color: #334155;
   --header-bg: #111827;
   --header-text: #ffffff;
 }
 
 * {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-secondary);
 }
 
 body {
   background-color: var(--bg-color);
   color: var(--text-primary);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+  font-family: var(--font-secondary);
+}
+
+/* Headings use Poppins */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-primary);
+}
+
+/* Buttons use Poppins */
+button {
+  font-family: var(--font-primary);
+}
+
+/* Animations */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
 }
 
 /* Card Styles */

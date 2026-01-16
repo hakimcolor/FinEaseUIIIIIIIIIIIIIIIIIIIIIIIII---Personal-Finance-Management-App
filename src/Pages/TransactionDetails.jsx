@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { Helmet } from 'react-helmet';
 import Loading from './Loding';
 import { 
   FiArrowLeft, 
@@ -33,6 +34,9 @@ const TransactionDetails = () => {
 
   return (
     <div className="min-h-screen py-8 px-4" style={{ backgroundColor: 'var(--bg-color)' }}>
+      <Helmet>
+        <title>Transaction Details - Money Manager</title>
+      </Helmet>
       <div className="max-w-2xl mx-auto">
         {/* Back Button */}
         <button
