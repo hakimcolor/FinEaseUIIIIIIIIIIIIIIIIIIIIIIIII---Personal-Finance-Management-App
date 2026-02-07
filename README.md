@@ -8,7 +8,8 @@ A full-stack **MERN Stack** application designed for managing business finances,
 📦 **GitHub Repository:**  
 _([Add your GitHub repo link here](https://github.com/hakimcolor/FinEaseUIIIIIIIIIIIIIIIIIIIIIIIII---Personal-Finance-Management-App/edit/main/README.md))_
 
----
+---<img width="1220" height="901" alt="Screenshot 2026-01-17 002601" src="https://github.com/user-attachments/assets/0dba27c3-2763-4e24-bda5-854837a682fb" />
+
 
 ## 🚀 Project Overview
 
@@ -89,9 +90,29 @@ Finance-Management-App
 
 ## 🧑‍💻 How to Clone & Run Locally
 
+
+
 ### 1️⃣ Clone the Repository
 ```bash
-git clone <your-github-repo-link>
+git clone https://github.com/hakimcolor/FinEaseUIIIIIIIIIIIIIIIIIIIIIIIII---Personal-Finance-Management-App.git
+
+cd Finance-Management-App
+
+cd server
+npm install
+npm run dev
+
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_secret_key
+
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_secret_key
+
+cd client
+npm install
+npm start
 
 
 
