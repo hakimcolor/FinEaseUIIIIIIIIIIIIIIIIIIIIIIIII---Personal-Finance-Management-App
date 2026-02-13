@@ -6,7 +6,7 @@ const About = () => {
   const features = [
     {
       icon: <FiTarget size={40} />,
-      title: 'Our Mission',
+      title: 'Our Mission ',
       description:
         'To empower individuals with simple yet powerful tools to take control of their financial future and achieve their money goals.',
     },
