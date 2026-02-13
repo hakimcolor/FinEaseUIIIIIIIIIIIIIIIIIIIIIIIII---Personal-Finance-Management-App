@@ -26,7 +26,7 @@ const About = () => {
       icon: <FiShield size={40} />,
       title: 'Secure & Private',
       description:
-        'Your financial data is encrypted and secure. We never share your information with third parties.',
+        'Your financial data is encrypted and secure. We never share your information with third parties ',
     },
   ];
 
