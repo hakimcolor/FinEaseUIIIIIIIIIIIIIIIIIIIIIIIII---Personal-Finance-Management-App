@@ -14,6 +14,9 @@ import NotFound from '../Pages/NotFound';
 import About from '../Pages/About';
 import Features from '../Pages/Features';
 import Contact from '../Pages/Contact';
+import AdminDashboard from '../Pages/AdminDashboard';
+import BudgetPlanning from '../Pages/BudgetPlanning';
+import UserDashboard from '../Pages/UserDashboard';
 
 export const router = createBrowserRouter([
   {
@@ -70,6 +73,18 @@ export const router = createBrowserRouter([
           {
             path: 'myprofile',
             element: <MyProfile />,
+          },
+          {
+            path: 'admin-dashboard',
+            element: <AdminDashboard />,
+          },
+          {
+            path: 'budget-planning',
+            element: <BudgetPlanning />,
+          },
+          {
+            path: 'user-dashboard',
+            element: <UserDashboard />,
           },
         ],
       },
