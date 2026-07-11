@@ -6,7 +6,7 @@ A full-stack **MERN Stack** application designed for managing business finances,
 [https://fineasmanagmentapp.netlify.app/](https://fineasmanagmentapp.netlify.app/)  
 
 📦 **GitHub Repository:**  
-_([Add your GitHub repo link here](https://github.com/hakimcolor/FinEaseUIIIIIIIIIIIIIIIIIIIIIIIII---Personal-Finance-Management-App/edit/main/README.md))_
+_(https://github.com/hakimcolor/FinEaseUIIIIIIIIIIIIIIIIIIIIIIIII---Personal-Finance-Management-App/edit/main/README.md))_
 
 ---<img width="1220" height="901" alt="Screenshot 2026-01-17 002601" src="https://github.com/user-attachments/assets/0dba27c3-2763-4e24-bda5-854837a682fb" />
 
