@@ -10,7 +10,17 @@ import QuickActions from '../Componentes/QuickActions';
 import RecentTransactions from '../Componentes/RecentTransactions';
 import MoneyTips from '../Componentes/MoneyTips';
 import SavingsGoals from '../Componentes/SavingsGoals';
-import { FiActivity, FiPieChart, FiBarChart2, FiTarget, FiTrendingUp, FiStar, FiThumbsUp, FiAlertTriangle } from 'react-icons/fi';
+import FinancialInsights from '../Componentes/FinancialInsights';
+import {
+  FiActivity,
+  FiPieChart,
+  FiBarChart2,
+  FiTarget,
+  FiTrendingUp,
+  FiStar,
+  FiThumbsUp,
+  FiAlertTriangle,
+} from 'react-icons/fi';
 
 // Scroll Animation Wrapper Component
 const ScrollReveal = ({ children, direction = 'up', delay = 0 }) => {
@@ -78,11 +88,14 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: 'var(--bg-color)' }}>
+    <div
+      className="min-h-screen"
+      style={{ backgroundColor: 'var(--bg-color)' }}
+    >
       <Helmet>
         <title>Money Manager - Track Your Finances</title>
       </Helmet>
-      
+
       {/* Hero Slider */}
       <ScrollReveal direction="scale">
         <HomeSlider />
@@ -112,8 +125,12 @@ const Home = () => {
               {/* Financial Health Score */}
               <ScrollReveal direction="left" delay={0.1}>
                 <div className="card rounded-2xl shadow-lg p-6">
-                  <h3 className="text-xl font-bold mb-4 flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
-                    <FiActivity style={{ color: 'var(--color-primary)' }} /> Financial Health
+                  <h3
+                    className="text-xl font-bold mb-4 flex items-center gap-2"
+                    style={{ color: 'var(--text-primary)' }}
+                  >
+                    <FiActivity style={{ color: 'var(--color-primary)' }} />{' '}
+                    Financial Health
                   </h3>
                   <FinancialHealthMini />
                 </div>
@@ -122,8 +139,12 @@ const Home = () => {
               {/* Expense Breakdown Mini */}
               <ScrollReveal direction="right" delay={0.2}>
                 <div className="card rounded-2xl shadow-lg p-6">
-                  <h3 className="text-xl font-bold mb-4 flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
-                    <FiPieChart style={{ color: 'var(--color-primary)' }} /> Spending Overview
+                  <h3
+                    className="text-xl font-bold mb-4 flex items-center gap-2"
+                    style={{ color: 'var(--text-primary)' }}
+                  >
+                    <FiPieChart style={{ color: 'var(--color-primary)' }} />{' '}
+                    Spending Overview
                   </h3>
                   <ExpenseBreakdownMini />
                 </div>
@@ -136,8 +157,13 @@ const Home = () => {
             <SavingsGoals />
           </ScrollReveal>
 
-          {/* Recent Transactions */}
+          {/* Financial Insights */}
           <ScrollReveal direction="up" delay={0.15}>
+            <FinancialInsights />
+          </ScrollReveal>
+
+          {/* Recent Transactions */}
+          <ScrollReveal direction="up" delay={0.2}>
             <RecentTransactions />
           </ScrollReveal>
         </>
@@ -158,18 +184,26 @@ const Home = () => {
 // Mini Financial Health
 const FinancialHealthMini = () => {
   const { user } = useContext(AuthContext);
-  const [data, setData] = React.useState({ totalIncome: 0, totalExpense: 0, balance: 0 });
+  const [data, setData] = React.useState({
+    totalIncome: 0,
+    totalExpense: 0,
+    balance: 0,
+  });
   const [score, setScore] = React.useState(0);
 
   React.useEffect(() => {
     if (user?.email) {
-      fetch(`${import.meta.env.VITE_BACKEND_API}/transactions/overview?email=${user.email}`)
+      fetch(
+        `${import.meta.env.VITE_BACKEND_API}/transactions/overview?email=${user.email}`
+      )
         .then((res) => res.json())
         .then((data) => {
           setData(data);
-          const savingsRate = data.totalIncome > 0 
-            ? ((data.totalIncome - data.totalExpense) / data.totalIncome) * 100 
-            : 0;
+          const savingsRate =
+            data.totalIncome > 0
+              ? ((data.totalIncome - data.totalExpense) / data.totalIncome) *
+                100
+              : 0;
           setScore(Math.min(100, Math.max(0, Math.round(savingsRate * 2))));
         })
         .catch(console.error);
@@ -177,10 +211,29 @@ const FinancialHealthMini = () => {
   }, [user]);
 
   const getStatus = () => {
-    if (score >= 80) return { label: 'Excellent', icon: <FiStar size={20} />, color: 'var(--color-success)' };
-    if (score >= 60) return { label: 'Good', icon: <FiThumbsUp size={20} />, color: 'var(--color-primary)' };
-    if (score >= 40) return { label: 'Fair', icon: <FiAlertTriangle size={20} />, color: 'var(--color-secondary)' };
-    return { label: 'Needs Work', icon: <FiAlertTriangle size={20} />, color: 'var(--color-danger)' };
+    if (score >= 80)
+      return {
+        label: 'Excellent',
+        icon: <FiStar size={20} />,
+        color: 'var(--color-success)',
+      };
+    if (score >= 60)
+      return {
+        label: 'Good',
+        icon: <FiThumbsUp size={20} />,
+        color: 'var(--color-primary)',
+      };
+    if (score >= 40)
+      return {
+        label: 'Fair',
+        icon: <FiAlertTriangle size={20} />,
+        color: 'var(--color-secondary)',
+      };
+    return {
+      label: 'Needs Work',
+      icon: <FiAlertTriangle size={20} />,
+      color: 'var(--color-danger)',
+    };
   };
 
   const status = getStatus();
@@ -189,9 +242,18 @@ const FinancialHealthMini = () => {
     <div className="flex items-center gap-6">
       <div className="relative w-24 h-24">
         <svg className="w-full h-full transform -rotate-90">
-          <circle cx="50%" cy="50%" r="40%" stroke="var(--border-color)" strokeWidth="8" fill="none" />
           <circle
-            cx="50%" cy="50%" r="40%"
+            cx="50%"
+            cy="50%"
+            r="40%"
+            stroke="var(--border-color)"
+            strokeWidth="8"
+            fill="none"
+          />
+          <circle
+            cx="50%"
+            cy="50%"
+            r="40%"
             stroke="var(--color-primary)"
             strokeWidth="8"
             fill="none"
@@ -200,23 +262,45 @@ const FinancialHealthMini = () => {
           />
         </svg>
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>{score}</span>
+          <span
+            className="text-2xl font-bold"
+            style={{ color: 'var(--text-primary)' }}
+          >
+            {score}
+          </span>
         </div>
       </div>
       <div>
-        <div className="text-lg font-bold flex items-center gap-1" style={{ color: status.color }}>
+        <div
+          className="text-lg font-bold flex items-center gap-1"
+          style={{ color: status.color }}
+        >
           {status.icon} {status.label}
         </div>
         <p className="text-sm mt-1" style={{ color: 'var(--text-secondary)' }}>
-          Savings: {data.totalIncome > 0 ? Math.round(((data.totalIncome - data.totalExpense) / data.totalIncome) * 100) : 0}%
+          Savings:{' '}
+          {data.totalIncome > 0
+            ? Math.round(
+                ((data.totalIncome - data.totalExpense) / data.totalIncome) *
+                  100
+              )
+            : 0}
+          %
         </p>
-        <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Balance: ${data.balance}</p>
+        <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
+          Balance: ${data.balance}
+        </p>
       </div>
     </div>
   );
 };
 
-const expenseCategoryColors = ['var(--color-primary)', 'var(--color-secondary)', 'var(--color-success)', 'var(--color-danger)'];
+const expenseCategoryColors = [
+  'var(--color-primary)',
+  'var(--color-secondary)',
+  'var(--color-success)',
+  'var(--color-danger)',
+];
 
 // Mini Expense Breakdown
 const ExpenseBreakdownMini = () => {
@@ -225,12 +309,17 @@ const ExpenseBreakdownMini = () => {
 
   React.useEffect(() => {
     if (user?.email) {
-      fetch(`${import.meta.env.VITE_BACKEND_API}/transactions?email=${user.email}`)
+      fetch(
+        `${import.meta.env.VITE_BACKEND_API}/transactions?email=${user.email}`
+      )
         .then((res) => res.json())
         .then((data) => {
           const expenses = data.filter((tx) => tx.type === 'expense');
-          const total = expenses.reduce((sum, tx) => sum + Number(tx.amount), 0);
-          
+          const total = expenses.reduce(
+            (sum, tx) => sum + Number(tx.amount),
+            0
+          );
+
           const grouped = expenses.reduce((acc, tx) => {
             const cat = tx.category?.toLowerCase() || 'other';
             acc[cat] = (acc[cat] || 0) + Number(tx.amount);
@@ -254,7 +343,11 @@ const ExpenseBreakdownMini = () => {
   }, [user]);
 
   if (categories.length === 0) {
-    return <p style={{ color: 'var(--text-muted)' }} className="text-sm">No expense data yet</p>;
+    return (
+      <p style={{ color: 'var(--text-muted)' }} className="text-sm">
+        No expense data yet
+      </p>
+    );
   }
 
   return (
@@ -263,11 +356,27 @@ const ExpenseBreakdownMini = () => {
         <div key={i} className="flex items-center gap-3">
           <div className="flex-1">
             <div className="flex justify-between text-sm mb-1">
-              <span className="capitalize" style={{ color: 'var(--text-primary)' }}>{cat.name}</span>
-              <span style={{ color: 'var(--text-secondary)' }}>{cat.percentage}%</span>
+              <span
+                className="capitalize"
+                style={{ color: 'var(--text-primary)' }}
+              >
+                {cat.name}
+              </span>
+              <span style={{ color: 'var(--text-secondary)' }}>
+                {cat.percentage}%
+              </span>
             </div>
-            <div className="w-full rounded-full h-2" style={{ backgroundColor: 'var(--border-color)' }}>
-              <div className="h-full rounded-full" style={{ width: `${cat.percentage}%`, backgroundColor: cat.color }}></div>
+            <div
+              className="w-full rounded-full h-2"
+              style={{ backgroundColor: 'var(--border-color)' }}
+            >
+              <div
+                className="h-full rounded-full"
+                style={{
+                  width: `${cat.percentage}%`,
+                  backgroundColor: cat.color,
+                }}
+              ></div>
             </div>
           </div>
         </div>
@@ -280,14 +389,21 @@ const ExpenseBreakdownMini = () => {
 const WelcomeSection = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-12">
-      <div className="rounded-3xl shadow-2xl p-8 sm:p-12 text-white text-center" style={{ background: 'linear-gradient(135deg, var(--color-primary), var(--color-secondary))' }}>
+      <div
+        className="rounded-3xl shadow-2xl p-8 sm:p-12 text-white text-center"
+        style={{
+          background:
+            'linear-gradient(135deg, var(--color-primary), var(--color-secondary))',
+        }}
+      >
         <h2 className="text-3xl sm:text-4xl font-bold mb-4 flex items-center justify-center gap-2">
           Take Control of Your Finances <FiTrendingUp />
         </h2>
         <p className="text-lg sm:text-xl opacity-90 mb-8 max-w-2xl mx-auto">
-          Track expenses, set savings goals, and build better money habits with our easy-to-use money management app.
+          Track expenses, set savings goals, and build better money habits with
+          our easy-to-use money management app.
         </p>
-        
+
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
           <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-6">
             <FiBarChart2 size={40} className="mx-auto mb-3" />
@@ -302,15 +418,24 @@ const WelcomeSection = () => {
           <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-6">
             <FiTrendingUp size={40} className="mx-auto mb-3" />
             <h3 className="font-bold text-lg">Grow Wealth</h3>
-            <p className="text-sm opacity-80">Build a secure financial future</p>
+            <p className="text-sm opacity-80">
+              Build a secure financial future
+            </p>
           </div>
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="/signup" className="px-8 py-3 bg-white font-bold rounded-full hover:bg-gray-100 transition shadow-lg" style={{ color: 'var(--color-primary)' }}>
+          <a
+            href="/signup"
+            className="px-8 py-3 bg-white font-bold rounded-full hover:bg-gray-100 transition shadow-lg"
+            style={{ color: 'var(--color-primary)' }}
+          >
             Get Started Free
           </a>
-          <a href="/signin" className="px-8 py-3 bg-transparent border-2 border-white font-bold rounded-full hover:bg-white/10 transition">
+          <a
+            href="/signin"
+            className="px-8 py-3 bg-transparent border-2 border-white font-bold rounded-full hover:bg-white/10 transition"
+          >
             Sign In
           </a>
         </div>

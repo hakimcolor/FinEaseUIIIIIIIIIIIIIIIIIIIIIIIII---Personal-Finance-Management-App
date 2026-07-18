@@ -1,24 +1,24 @@
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import { NavLink } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { AuthContext } from '../Context/AuthContext';
 import Swal from 'sweetalert2';
-import { 
-  FiList, 
-  FiFilter, 
-  FiTrendingUp, 
-  FiTrendingDown, 
-  FiEdit2, 
-  FiTrash2, 
+import {
+  FiList,
+  FiFilter,
+  FiTrendingUp,
+  FiTrendingDown,
+  FiEdit2,
+  FiTrash2,
   FiEye,
   FiInbox,
   FiPlus,
   FiSearch,
   FiX,
   FiChevronLeft,
-  FiChevronRight
+  FiChevronRight,
 } from 'react-icons/fi';
 
 const MyTransactions = () => {
@@ -29,7 +29,7 @@ const MyTransactions = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  const fetchTransactions = async () => {
+  const fetchTransactions = useCallback(async () => {
     if (!user?.email) return;
     try {
       const res = await axios.get(
@@ -39,10 +39,16 @@ const MyTransactions = () => {
     } catch {
       toast.error('Failed to fetch transactions');
     }
-  };
+  }, [user]);
 
   useEffect(() => {
-    fetchTransactions();
+    if (!user?.email) return;
+    axios
+      .get(
+        `${import.meta.env.VITE_BACKEND_API}/transactions?email=${user.email}`
+      )
+      .then((res) => setTransactions(res.data))
+      .catch(() => toast.error('Failed to fetch transactions'));
   }, [user]);
 
   const handleDelete = async (id) => {
@@ -124,33 +130,48 @@ const MyTransactions = () => {
     }
   };
 
-  // Reset to page 1 when search or sort changes
-  useEffect(() => {
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
     setCurrentPage(1);
-  }, [searchQuery, sortOption]);
+  };
+
+  const handleSortChange = (e) => {
+    setSortOption(e.target.value);
+    setCurrentPage(1);
+  };
 
   return (
-    <div className="min-h-screen py-8 px-4" style={{ backgroundColor: 'var(--bg-color)' }}>
+    <div
+      className="min-h-screen py-8 px-4"
+      style={{ backgroundColor: 'var(--bg-color)' }}
+    >
       <Helmet>
         <title>My Transactions - Money Manager</title>
       </Helmet>
       <Toaster />
-      
+
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-3" style={{ color: 'var(--text-primary)' }}>
-              <div 
+            <h1
+              className="text-2xl sm:text-3xl font-bold flex items-center gap-3"
+              style={{ color: 'var(--text-primary)' }}
+            >
+              <div
                 className="w-12 h-12 rounded-xl flex items-center justify-center"
-                style={{ backgroundColor: 'var(--color-primary)', color: 'white' }}
+                style={{
+                  backgroundColor: 'var(--color-primary)',
+                  color: 'white',
+                }}
               >
                 <FiList size={24} />
               </div>
               My Transactions
             </h1>
             <p className="mt-2" style={{ color: 'var(--text-muted)' }}>
-              {sortedTransactions.length} transaction{sortedTransactions.length !== 1 ? 's' : ''} found
+              {sortedTransactions.length} transaction
+              {sortedTransactions.length !== 1 ? 's' : ''} found
             </p>
           </div>
 
@@ -166,14 +187,17 @@ const MyTransactions = () => {
         </div>
 
         {/* Search and Filter Bar */}
-        <div 
+        <div
           className="flex flex-col sm:flex-row gap-3 mb-6 p-4 rounded-2xl"
-          style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-color)' }}
+          style={{
+            backgroundColor: 'var(--bg-card)',
+            border: '1px solid var(--border-color)',
+          }}
         >
           {/* Search Input */}
           <div className="flex-1 relative">
-            <FiSearch 
-              size={18} 
+            <FiSearch
+              size={18}
               className="absolute left-4 top-1/2 -translate-y-1/2"
               style={{ color: 'var(--text-muted)' }}
             />
@@ -181,17 +205,20 @@ const MyTransactions = () => {
               type="text"
               placeholder="Search by description or category..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={handleSearchChange}
               className="w-full pl-11 pr-10 py-3 rounded-xl outline-none transition-all"
-              style={{ 
-                backgroundColor: 'var(--bg-color)', 
+              style={{
+                backgroundColor: 'var(--bg-color)',
                 border: '2px solid var(--border-color)',
-                color: 'var(--text-primary)'
+                color: 'var(--text-primary)',
               }}
             />
             {searchQuery && (
               <button
-                onClick={() => setSearchQuery('')}
+                onClick={() => {
+                  setSearchQuery('');
+                  setCurrentPage(1);
+                }}
                 className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-full cursor-pointer transition-all hover:scale-110"
                 style={{ color: 'var(--text-muted)' }}
               >
@@ -201,16 +228,22 @@ const MyTransactions = () => {
           </div>
 
           {/* Sort Filter */}
-          <div 
+          <div
             className="flex items-center gap-2 px-4 py-3 rounded-xl"
-            style={{ backgroundColor: 'var(--bg-color)', border: '2px solid var(--border-color)' }}
+            style={{
+              backgroundColor: 'var(--bg-color)',
+              border: '2px solid var(--border-color)',
+            }}
           >
             <FiFilter size={16} style={{ color: 'var(--text-muted)' }} />
             <select
               value={sortOption}
-              onChange={(e) => setSortOption(e.target.value)}
+              onChange={handleSortChange}
               className="outline-none font-medium cursor-pointer text-sm"
-              style={{ backgroundColor: 'var(--bg-card)', color: 'var(--text-primary)' }}
+              style={{
+                backgroundColor: 'var(--bg-card)',
+                color: 'var(--text-primary)',
+              }}
             >
               <option value="type-income">Income First</option>
               <option value="type-expense">Expense First</option>
@@ -224,16 +257,25 @@ const MyTransactions = () => {
 
         {/* Empty State */}
         {sortedTransactions.length === 0 ? (
-          <div 
+          <div
             className="card rounded-2xl p-12 text-center"
             style={{ border: '1px solid var(--border-color)' }}
           >
-            <FiInbox size={64} className="mx-auto mb-4" style={{ color: 'var(--text-muted)' }} />
-            <h3 className="text-xl font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
+            <FiInbox
+              size={64}
+              className="mx-auto mb-4"
+              style={{ color: 'var(--text-muted)' }}
+            />
+            <h3
+              className="text-xl font-semibold mb-2"
+              style={{ color: 'var(--text-primary)' }}
+            >
               {searchQuery ? 'No results found' : 'No transactions found'}
             </h3>
             <p className="mb-6" style={{ color: 'var(--text-muted)' }}>
-              {searchQuery ? 'Try a different search term' : 'Start tracking your money by adding your first transaction'}
+              {searchQuery
+                ? 'Try a different search term'
+                : 'Start tracking your money by adding your first transaction'}
             </p>
             {!searchQuery && (
               <NavLink
@@ -248,7 +290,7 @@ const MyTransactions = () => {
         ) : (
           <>
             {/* Table */}
-            <div 
+            <div
               className="card rounded-2xl overflow-hidden"
               style={{ border: '1px solid var(--border-color)' }}
             >
@@ -256,67 +298,126 @@ const MyTransactions = () => {
               <div className="hidden md:block overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr style={{ backgroundColor: 'var(--bg-color)', borderBottom: '1px solid var(--border-color)' }}>
-                      <th className="text-left px-6 py-4 font-semibold text-sm" style={{ color: 'var(--text-muted)' }}>Type</th>
-                      <th className="text-left px-6 py-4 font-semibold text-sm" style={{ color: 'var(--text-muted)' }}>Category</th>
-                      <th className="text-left px-6 py-4 font-semibold text-sm" style={{ color: 'var(--text-muted)' }}>Description</th>
-                      <th className="text-left px-6 py-4 font-semibold text-sm" style={{ color: 'var(--text-muted)' }}>Date</th>
-                      <th className="text-right px-6 py-4 font-semibold text-sm" style={{ color: 'var(--text-muted)' }}>Amount</th>
-                      <th className="text-center px-6 py-4 font-semibold text-sm" style={{ color: 'var(--text-muted)' }}>Actions</th>
+                    <tr
+                      style={{
+                        backgroundColor: 'var(--bg-color)',
+                        borderBottom: '1px solid var(--border-color)',
+                      }}
+                    >
+                      <th
+                        className="text-left px-6 py-4 font-semibold text-sm"
+                        style={{ color: 'var(--text-muted)' }}
+                      >
+                        Type
+                      </th>
+                      <th
+                        className="text-left px-6 py-4 font-semibold text-sm"
+                        style={{ color: 'var(--text-muted)' }}
+                      >
+                        Category
+                      </th>
+                      <th
+                        className="text-left px-6 py-4 font-semibold text-sm"
+                        style={{ color: 'var(--text-muted)' }}
+                      >
+                        Description
+                      </th>
+                      <th
+                        className="text-left px-6 py-4 font-semibold text-sm"
+                        style={{ color: 'var(--text-muted)' }}
+                      >
+                        Date
+                      </th>
+                      <th
+                        className="text-right px-6 py-4 font-semibold text-sm"
+                        style={{ color: 'var(--text-muted)' }}
+                      >
+                        Amount
+                      </th>
+                      <th
+                        className="text-center px-6 py-4 font-semibold text-sm"
+                        style={{ color: 'var(--text-muted)' }}
+                      >
+                        Actions
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     {currentTransactions.map((item, index) => {
                       const isIncome = item.type === 'income';
                       return (
-                        <tr 
+                        <tr
                           key={item._id}
                           className="transition-colors hover:bg-opacity-50"
-                          style={{ 
-                            borderBottom: index !== currentTransactions.length - 1 ? '1px solid var(--border-color)' : 'none',
+                          style={{
+                            borderBottom:
+                              index !== currentTransactions.length - 1
+                                ? '1px solid var(--border-color)'
+                                : 'none',
                           }}
                         >
                           {/* Type */}
                           <td className="px-6 py-4">
-                            <span 
+                            <span
                               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-white"
-                              style={{ backgroundColor: isIncome ? 'var(--color-success)' : 'var(--color-danger)' }}
+                              style={{
+                                backgroundColor: isIncome
+                                  ? 'var(--color-success)'
+                                  : 'var(--color-danger)',
+                              }}
                             >
-                              {isIncome ? <FiTrendingUp size={12} /> : <FiTrendingDown size={12} />}
+                              {isIncome ? (
+                                <FiTrendingUp size={12} />
+                              ) : (
+                                <FiTrendingDown size={12} />
+                              )}
                               {item.type}
                             </span>
                           </td>
 
                           {/* Category */}
                           <td className="px-6 py-4">
-                            <span className="font-medium capitalize" style={{ color: 'var(--text-primary)' }}>
+                            <span
+                              className="font-medium capitalize"
+                              style={{ color: 'var(--text-primary)' }}
+                            >
                               {item.category}
                             </span>
                           </td>
 
                           {/* Description */}
                           <td className="px-6 py-4">
-                            <span className="text-sm max-w-[200px] truncate block" style={{ color: 'var(--text-secondary)' }}>
+                            <span
+                              className="text-sm max-w-[200px] truncate block"
+                              style={{ color: 'var(--text-secondary)' }}
+                            >
                               {item.description || '-'}
                             </span>
                           </td>
 
                           {/* Date */}
                           <td className="px-6 py-4">
-                            <span className="text-sm" style={{ color: 'var(--text-secondary)' }}>
+                            <span
+                              className="text-sm"
+                              style={{ color: 'var(--text-secondary)' }}
+                            >
                               {new Date(item.date).toLocaleDateString('en-US', {
                                 month: 'short',
                                 day: 'numeric',
-                                year: 'numeric'
+                                year: 'numeric',
                               })}
                             </span>
                           </td>
 
                           {/* Amount */}
                           <td className="px-6 py-4 text-right">
-                            <span 
+                            <span
                               className="font-bold text-lg"
-                              style={{ color: isIncome ? 'var(--color-success)' : 'var(--color-danger)' }}
+                              style={{
+                                color: isIncome
+                                  ? 'var(--color-success)'
+                                  : 'var(--color-danger)',
+                              }}
                             >
                               {isIncome ? '+' : '-'}${item.amount}
                             </span>
@@ -328,7 +429,10 @@ const MyTransactions = () => {
                               <NavLink
                                 to={`/transaction-details/${item._id}`}
                                 className="p-2 rounded-lg transition-all cursor-pointer hover:scale-110"
-                                style={{ backgroundColor: 'var(--bg-color)', color: 'var(--text-secondary)' }}
+                                style={{
+                                  backgroundColor: 'var(--bg-color)',
+                                  color: 'var(--text-secondary)',
+                                }}
                                 title="View"
                               >
                                 <FiEye size={16} />
@@ -336,7 +440,10 @@ const MyTransactions = () => {
                               <NavLink
                                 to={`/update-transaction/${item._id}`}
                                 className="p-2 rounded-lg transition-all cursor-pointer hover:scale-110"
-                                style={{ backgroundColor: 'var(--color-primary)', color: 'white' }}
+                                style={{
+                                  backgroundColor: 'var(--color-primary)',
+                                  color: 'white',
+                                }}
                                 title="Edit"
                               >
                                 <FiEdit2 size={16} />
@@ -344,7 +451,10 @@ const MyTransactions = () => {
                               <button
                                 onClick={() => handleDelete(item._id)}
                                 className="p-2 rounded-lg transition-all cursor-pointer hover:scale-110"
-                                style={{ backgroundColor: 'var(--color-danger)', color: 'white' }}
+                                style={{
+                                  backgroundColor: 'var(--color-danger)',
+                                  color: 'white',
+                                }}
                                 title="Delete"
                               >
                                 <FiTrash2 size={16} />
@@ -359,37 +469,61 @@ const MyTransactions = () => {
               </div>
 
               {/* Mobile List View */}
-              <div className="md:hidden divide-y" style={{ borderColor: 'var(--border-color)' }}>
+              <div
+                className="md:hidden divide-y"
+                style={{ borderColor: 'var(--border-color)' }}
+              >
                 {currentTransactions.map((item) => {
                   const isIncome = item.type === 'income';
                   return (
                     <div key={item._id} className="p-4">
                       <div className="flex items-start justify-between mb-3">
                         <div>
-                          <span 
+                          <span
                             className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold text-white mb-2"
-                            style={{ backgroundColor: isIncome ? 'var(--color-success)' : 'var(--color-danger)' }}
+                            style={{
+                              backgroundColor: isIncome
+                                ? 'var(--color-success)'
+                                : 'var(--color-danger)',
+                            }}
                           >
-                            {isIncome ? <FiTrendingUp size={10} /> : <FiTrendingDown size={10} />}
+                            {isIncome ? (
+                              <FiTrendingUp size={10} />
+                            ) : (
+                              <FiTrendingDown size={10} />
+                            )}
                             {item.type}
                           </span>
-                          <h3 className="font-semibold capitalize" style={{ color: 'var(--text-primary)' }}>
+                          <h3
+                            className="font-semibold capitalize"
+                            style={{ color: 'var(--text-primary)' }}
+                          >
                             {item.category}
                           </h3>
-                          <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
+                          <p
+                            className="text-sm"
+                            style={{ color: 'var(--text-muted)' }}
+                          >
                             {new Date(item.date).toLocaleDateString()}
                           </p>
                         </div>
-                        <span 
+                        <span
                           className="font-bold text-lg"
-                          style={{ color: isIncome ? 'var(--color-success)' : 'var(--color-danger)' }}
+                          style={{
+                            color: isIncome
+                              ? 'var(--color-success)'
+                              : 'var(--color-danger)',
+                          }}
                         >
                           {isIncome ? '+' : '-'}${item.amount}
                         </span>
                       </div>
-                      
+
                       {item.description && (
-                        <p className="text-sm mb-3" style={{ color: 'var(--text-secondary)' }}>
+                        <p
+                          className="text-sm mb-3"
+                          style={{ color: 'var(--text-secondary)' }}
+                        >
                           {item.description}
                         </p>
                       )}
@@ -398,7 +532,11 @@ const MyTransactions = () => {
                         <NavLink
                           to={`/transaction-details/${item._id}`}
                           className="flex-1 flex items-center justify-center gap-1 py-2 rounded-lg text-sm font-medium cursor-pointer"
-                          style={{ backgroundColor: 'var(--bg-color)', color: 'var(--text-secondary)', border: '1px solid var(--border-color)' }}
+                          style={{
+                            backgroundColor: 'var(--bg-color)',
+                            color: 'var(--text-secondary)',
+                            border: '1px solid var(--border-color)',
+                          }}
                         >
                           <FiEye size={14} /> View
                         </NavLink>
@@ -425,10 +563,18 @@ const MyTransactions = () => {
 
             {/* Pagination Controls */}
             {totalPages > 1 && (
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6 p-4 rounded-2xl" style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-color)' }}>
+              <div
+                className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6 p-4 rounded-2xl"
+                style={{
+                  backgroundColor: 'var(--bg-card)',
+                  border: '1px solid var(--border-color)',
+                }}
+              >
                 {/* Page Info */}
                 <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
-                  Showing {startIndex + 1}-{Math.min(endIndex, sortedTransactions.length)} of {sortedTransactions.length} transactions
+                  Showing {startIndex + 1}-
+                  {Math.min(endIndex, sortedTransactions.length)} of{' '}
+                  {sortedTransactions.length} transactions
                 </p>
 
                 {/* Pagination Buttons */}
@@ -438,11 +584,16 @@ const MyTransactions = () => {
                     onClick={goToPrevPage}
                     disabled={currentPage === 1}
                     className={`flex items-center gap-2 px-4 py-2 rounded-xl font-medium transition-all cursor-pointer ${
-                      currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'
+                      currentPage === 1
+                        ? 'opacity-50 cursor-not-allowed'
+                        : 'hover:scale-105'
                     }`}
-                    style={{ 
-                      backgroundColor: currentPage === 1 ? 'var(--border-color)' : 'var(--color-primary)', 
-                      color: currentPage === 1 ? 'var(--text-muted)' : 'white'
+                    style={{
+                      backgroundColor:
+                        currentPage === 1
+                          ? 'var(--border-color)'
+                          : 'var(--color-primary)',
+                      color: currentPage === 1 ? 'var(--text-muted)' : 'white',
                     }}
                   >
                     <FiChevronLeft size={18} />
@@ -457,7 +608,8 @@ const MyTransactions = () => {
                       if (
                         pageNum === 1 ||
                         pageNum === totalPages ||
-                        (pageNum >= currentPage - 1 && pageNum <= currentPage + 1)
+                        (pageNum >= currentPage - 1 &&
+                          pageNum <= currentPage + 1)
                       ) {
                         return (
                           <button
@@ -469,10 +621,19 @@ const MyTransactions = () => {
                             className={`w-10 h-10 rounded-xl font-medium transition-all cursor-pointer ${
                               currentPage === pageNum ? '' : 'hover:scale-105'
                             }`}
-                            style={{ 
-                              backgroundColor: currentPage === pageNum ? 'var(--color-primary)' : 'var(--bg-color)', 
-                              color: currentPage === pageNum ? 'white' : 'var(--text-primary)',
-                              border: currentPage === pageNum ? 'none' : '1px solid var(--border-color)'
+                            style={{
+                              backgroundColor:
+                                currentPage === pageNum
+                                  ? 'var(--color-primary)'
+                                  : 'var(--bg-color)',
+                              color:
+                                currentPage === pageNum
+                                  ? 'white'
+                                  : 'var(--text-primary)',
+                              border:
+                                currentPage === pageNum
+                                  ? 'none'
+                                  : '1px solid var(--border-color)',
                             }}
                           >
                             {pageNum}
@@ -480,10 +641,16 @@ const MyTransactions = () => {
                         );
                       } else if (
                         (pageNum === currentPage - 2 && currentPage > 3) ||
-                        (pageNum === currentPage + 2 && currentPage < totalPages - 2)
+                        (pageNum === currentPage + 2 &&
+                          currentPage < totalPages - 2)
                       ) {
                         return (
-                          <span key={pageNum} style={{ color: 'var(--text-muted)' }}>...</span>
+                          <span
+                            key={pageNum}
+                            style={{ color: 'var(--text-muted)' }}
+                          >
+                            ...
+                          </span>
                         );
                       }
                       return null;
@@ -495,11 +662,19 @@ const MyTransactions = () => {
                     onClick={goToNextPage}
                     disabled={currentPage === totalPages}
                     className={`flex items-center gap-2 px-4 py-2 rounded-xl font-medium transition-all cursor-pointer ${
-                      currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'
+                      currentPage === totalPages
+                        ? 'opacity-50 cursor-not-allowed'
+                        : 'hover:scale-105'
                     }`}
-                    style={{ 
-                      backgroundColor: currentPage === totalPages ? 'var(--border-color)' : 'var(--color-primary)', 
-                      color: currentPage === totalPages ? 'var(--text-muted)' : 'white'
+                    style={{
+                      backgroundColor:
+                        currentPage === totalPages
+                          ? 'var(--border-color)'
+                          : 'var(--color-primary)',
+                      color:
+                        currentPage === totalPages
+                          ? 'var(--text-muted)'
+                          : 'white',
                     }}
                   >
                     <span className="hidden sm:inline">Next</span>
