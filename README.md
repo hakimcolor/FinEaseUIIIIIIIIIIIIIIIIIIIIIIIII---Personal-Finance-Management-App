@@ -122,6 +122,6 @@ Fully responsive across mobile (320px+), tablet, and desktop.
 ## Admin Credentials (Demo)
 
 ```
-Email: admin@fintrack.com
-Password: Admin@123456
+Email: hakimcolor777@gmail.com
+Password: 012345678HaKIM#
 ```
