@@ -124,7 +124,7 @@ const MyTransactions = () => {
     }
   };
 
-  // Reset to page 1 when search or sort changes
+  // Reset to page 1 when search or sort changess
   useEffect(() => {
     setCurrentPage(1);
   }, [searchQuery, sortOption]);
